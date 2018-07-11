@@ -150,25 +150,26 @@ programs[4] = new Array()
 	]
 
 	programs[5] = programs[5].concat(transform_negate(4))
-	programs[5] = programs[5].concat(transform_recursive_dyalic(23))
+	programs[5] = programs[5].concat(transform_recursive_dyalic(25))
 
-	programs[5] = programs[5].concat(generateCompute(57+38*0, "&", thekey[0]))
-	programs[5] = programs[5].concat(generateCompute(57+38*1, "/", thekey[1]))
-	programs[5] = programs[5].concat(generateCompute(57+38*2, ">", thekey[2]))
-	programs[5] = programs[5].concat(generateCompute(57+38*3, ":", thekey[3]))
+	programs[5] = programs[5].concat(generateCompute(59+38*0, "&", thekey[0]))
+	programs[5] = programs[5].concat(generateCompute(59+38*1, "/", thekey[1]))
+	programs[5] = programs[5].concat(generateCompute(59+38*2, ">", thekey[2]))
+	programs[5] = programs[5].concat(generateCompute(59+38*3, ":", thekey[3]))
 
-	programs[5] = programs[5].concat(generateWrite(57+38*4, "p", "0011001100110011"))
-	programs[5] = programs[5].concat(generateWrite(57+38*4 + 19, "q", "0101010101010101"))
-	programs[5] = programs[5].concat(generateWrite(57+38*4 + 19*2, "r", "0000000011111111"))
-	programs[5] = programs[5].concat(generateWrite(57+38*4 + 19*3, "s", "0000111100001111"))
+	programs[5] = programs[5].concat(generateWrite(59+38*4, "p", "0011001100110011"))
+	programs[5] = programs[5].concat(generateWrite(59+38*4 + 19, "q", "0101010101010101"))
+	programs[5] = programs[5].concat(generateWrite(59+38*4 + 19*2, "r", "0000000011111111"))
+	programs[5] = programs[5].concat(generateWrite(59+38*4 + 19*3, "s", "0000111100001111"))
 
-	programs[5] = programs[5].concat(generateNegate(57+38*4 + 19*4))
+	programs[5] = programs[5].concat(generateNegate(59+38*4 + 19*4))
 	
 	programs[6] = programs[5]
 
 	tapes[4] = ["/","p","q"]
 	
-	tapes[5] = "((~p>q):~(p&q))".split('')
+	// tapes[5] = "((~p>q):~(p&q))".split('')
+	tapes[5] = "((p&~~p):(~~p&p))".split('')
 	
 	tapes[6] = "(((~p>q)/~(p&q)):(r&(p>s)))".split('')
 
@@ -330,6 +331,7 @@ function transform_negate(start_state) { // todo recursion
 	var right = 1, left = 0, halt = 2;
 
 	return [
+		// scan right
 		[1, "p", "p", right, 1],
 		[1, "q", "q", right, 1],
 		[1, "r", "r", right, 1],
@@ -341,17 +343,40 @@ function transform_negate(start_state) { // todo recursion
 		[1, "(", "(", right, 1],
 		[1, ")", ")", right, 1],
 
-		[1, "~", "~", right, start_state+1],
+		[1, "#", "#", left, 410],
+		[410, "$", "$", left, 410],
+		[410, "#", "#", right, 510],
+
+		[1, "~", "~", right, start_state+19],
+		[start_state+19, "~", "~", right, start_state+19],
+		[start_state+19, "p", "p", halt, start_state+1],
+		[start_state+19, "q", "q", halt, start_state+1],
+		[start_state+19, "r", "r", halt, start_state+1],
+		[start_state+19, "s", "s", halt, start_state+1],
+		[start_state+19, "(", "(", halt, start_state+1],
+		[start_state+19, ")", ")", right, 1],
+		[start_state+19, "&", "&", right, 1],
+		[start_state+19, "/", "/", right, 1],
+		[start_state+19, ">", ">", right, 1],
+		[start_state+19, ":", ":", right, 1],
+
+		[start_state+19, "#", "#", left, start_state+20],
+		// return to head
+		[start_state+20, "$", "$", left, start_state+20],
+		[start_state+20, "#", "#", right, 510],
+
+		// swap
 		[start_state+1, "p", "~", left, start_state+2],
 		[start_state+1, "q", "~", left, start_state+3],
 		[start_state+1, "r", "~", left, start_state+4],
 		[start_state+1, "s", "~", left, start_state+5],
 
-		[start_state+2, "$", "p", right, start_state+6],
-		[start_state+3, "$", "q", right, start_state+6],
-		[start_state+4, "$", "r", right, start_state+6],
-		[start_state+5, "$", "s", right, start_state+6],
-		[start_state+6, "$", "$", right, 1],
+		[start_state+2, "$", "p", left, start_state+6],
+		[start_state+3, "$", "q", left, start_state+6],
+		[start_state+4, "$", "r", left, start_state+6],
+		[start_state+5, "$", "s", left, start_state+6],
+		[start_state+6, "$", "$", left, start_state+6],
+		[start_state+6, "#", "#", right, 1],
 
 		[start_state+1, "(", "*", left, start_state+7],
 		[start_state+7, "~", "(", right, start_state+7],
@@ -379,7 +404,7 @@ function transform_negate(start_state) { // todo recursion
 
 		[start_state+17, "*", "~", left, start_state+18],
 		[start_state+18, "$", "$", left, start_state+18],
-		[start_state+18, "#", "#", right, 510],
+		[start_state+18, "#", "#", right, start_state+1],
 	]
 }
 
