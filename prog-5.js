@@ -1,5 +1,8 @@
 var program5 = [
     [0, "#", "#", 1, 'start'],
+    ['erase', '$', '#', 0, 'erase'],
+    ['erase', '#', '#', 1, 'compute'],
+    ['compute', '#', '#', 1, 'compute'],
     ['compute', "@", "#", 1, 'validate'],
     ['validate', "1", "#", 1, 'validate'],
     ['validate', "#", "T", 2, "x"],
@@ -394,7 +397,8 @@ function generateCompute(op, looktable) {
         [s + 36, "1", looktable[0][1], right, move_right],
 
         [end, "$", "$", left, end],
-        [end, "#", op, right, "compute"],
+        [end, "#", '#', left, "erase"],
+        // [end, "#", op, right, "compute"],
     ];
 
 }
@@ -440,3 +444,5 @@ tapes[5] = "(p&~~p):(~~p&p)".split('')
 // tapes[5] = "~~p:p".split('')
 // tapes[5] = "(p&p):p".split('')
 // tapes[5] = "(p&q):(q&p)".split('')
+// tapes[5] = "p:~~p".split('')
+// tapes[5] = "p:p".split('')
