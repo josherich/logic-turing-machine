@@ -281,28 +281,30 @@ function transform_negate() {
         ["sc_left", "$", "$", left, "sc_left"],
         ["sc_left", "#", "#", right, 'start'],
 
-        ["mv_~", "(", "*", left, "shft_left"],
-        ["shft_left", "~", "(", right, "shft_left"],
-        ["shft_left", "*", "*", right, "shft_left"],
+        ["mv_~", "(", "*", left, "pre_shf_l"],
+        ["pre_shf_l", "~", "(", right, "shf_l"],
 
-        ["shft_left", "p", "*", left, "shf_p"],
-        ["shft_left", "q", "*", left, "shf_q"],
-        ["shft_left", "r", "*", left, "shf_r"],
-        ["shft_left", "s", "*", left, "shf_s"],
-        ["shft_left", "&", "*", left, "shf_&"],
-        ["shft_left", "/", "*", left, "shf_/"],
-        ["shft_left", ">", "*", left, "shf_>"],
-        ["shft_left", ":", "*", left, "shf_:"],
-        ["shft_left", ")", "*", left, "shf_)"],
+        ["shf_l", "*", "*", right, "shf_l"],
+        ["shf_l", "~", "*", left, "shf_~"],
+        ["shf_l", "p", "*", left, "shf_p"],
+        ["shf_l", "q", "*", left, "shf_q"],
+        ["shf_l", "r", "*", left, "shf_r"],
+        ["shf_l", "s", "*", left, "shf_s"],
+        ["shf_l", "&", "*", left, "shf_&"],
+        ["shf_l", "/", "*", left, "shf_/"],
+        ["shf_l", ">", "*", left, "shf_>"],
+        ["shf_l", ":", "*", left, "shf_:"],
+        ["shf_l", ")", "*", left, "shf_)"],
 
-        ["shf_p", "*", "p", right, "shft_left"],
-        ["shf_q", "*", "q", right, "shft_left"],
-        ["shf_r", "*", "r", right, "shft_left"],
-        ["shf_s", "*", "s", right, "shft_left"],
-        ["shf_&", "*", "&", right, "shft_left"],
-        ["shf_/", "*", "/", right, "shft_left"],
-        ["shf_>", "*", ">", right, "shft_left"],
-        ["shf_:", "*", ":", right, "shft_left"],
+        ["shf_p", "*", "p", right, "shf_l"],
+        ["shf_q", "*", "q", right, "shf_l"],
+        ["shf_r", "*", "r", right, "shf_l"],
+        ["shf_s", "*", "s", right, "shf_l"],
+        ["shf_&", "*", "&", right, "shf_l"],
+        ["shf_/", "*", "/", right, "shf_l"],
+        ["shf_>", "*", ">", right, "shf_l"],
+        ["shf_:", "*", ":", right, "shf_l"],
+        ["shf_~", "*", "~", right, "shf_l"],
         ["shf_)", "*", ")", right, "shf_done"],
 
         ["shf_done", "*", "~", left, "sc_left"],
@@ -440,9 +442,3 @@ function generateWrite(read, write) {
 
 programs[5] = program5;
 tapes[5] = "(p&~~p):(~~p&p)".split('')
-// tapes[5] = "((~p>q)/~(p&q)):(r&(p>s))".split('')
-// tapes[5] = "~~p:p".split('')
-// tapes[5] = "(p&p):p".split('')
-// tapes[5] = "(p&q):(q&p)".split('')
-// tapes[5] = "p:~~p".split('')
-// tapes[5] = "p:p".split('')

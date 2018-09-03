@@ -583,3 +583,14 @@ function loadProgram(prognum) {
     if (tapes[prognum][i] != null) addLink(document.getElementById("t" + (i + 1)), tapes[prognum][i])
   }
 }
+
+function loadProgramMenu() {
+  var select = document.getElementById('programmenu');
+  tapes.map(function(tape, idx) {
+    if (idx < 6) return null;
+    var option = document.createElement('option');
+    option.value = idx;
+    option.textContent = tape.join('');
+    select.appendChild(option);
+  });
+}
